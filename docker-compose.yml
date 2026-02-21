@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  cats-dogs-api:
+    image: gowthampotluri/cats-dogs-api:latest
+    container_name: cats-dogs-api
+    ports:
+      - "8080:8080"
+    restart: always
