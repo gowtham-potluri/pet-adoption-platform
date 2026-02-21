@@ -1,0 +1,11 @@
+.git
+.gitignore
+.dvc
+.dvc/cache
+mlruns
+data
+__pycache__
+*.pyc
+Dockerfile
+dvc.yaml
+params.yaml

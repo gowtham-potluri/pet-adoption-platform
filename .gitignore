@@ -1,3 +1,27 @@
 .venv
 
-/data
+# Python
+__pycache__/
+.pytest_cache
+*.pyc
+.venv/
+
+# Data
+data/raw/
+data/processed/
+
+# DVC cache
+.dvc/cache/
+.dvcignore
+
+# MLflow
+mlruns/
+
+# Models
+models/
+!src/models/
+
+# OS files
+.DS_Store
+
+confusion_matrix.png
