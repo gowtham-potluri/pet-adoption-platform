@@ -1,0 +1,6 @@
+[core]
+    remote = gdrive
+['remote "gdrive"']
+    url = gdrive://18EKVUP1ZBlTXIrbrjmrb6Ep0sD_QD5j1
+    gdrive_use_service_account = true
+    gdrive_service_account_json_file_path = ../gdrive-creds.json
