@@ -1,23 +1,30 @@
 import requests
 import sys
+import time
 
 BASE_URL = "http://localhost:8080"
+SAMPLE_IMAGE = "checks/smoke/cat_test_image.jpg"
+
+# Wait a few seconds for the server to start
+print("Waiting for the API server to be ready...")
+time.sleep(5)  # adjust as needed
 
 # Health check
 try:
     r = requests.get(f"{BASE_URL}/health")
-    assert r.status_code == 200
+    r.raise_for_status()
     print("Health check passed")
 except Exception as e:
     print(f"Health check failed: {e}")
     sys.exit(1)
 
-# Prediction check
-sample_input = {"image_path": "checks/smoke/cat_test_image.jpg"}
+# Prediction check (uploading file)
 try:
-    r = requests.post(f"{BASE_URL}/predict", json=sample_input)
-    assert r.status_code == 200
-    print("Prediction endpoint passed:", r.json())
+    with open(SAMPLE_IMAGE, "rb") as f:
+        files = {"file": f}
+        r = requests.post(f"{BASE_URL}/predict", files=files)
+        r.raise_for_status()
+        print("Prediction endpoint passed:", r.json())
 except Exception as e:
     print(f"Prediction endpoint failed: {e}")
     sys.exit(1)
