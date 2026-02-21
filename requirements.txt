@@ -1,0 +1,16 @@
+# Core ML Framework
+tensorflow>=2.15.0
+
+# Experiment Tracking
+mlflow>=2.10.0
+
+# Data Versioning & Utilities
+dvc>=3.40.0
+pathspec<0.12
+setuptools
+
+# Data Science Stack (Relaxed pins for 3.11 compatibility)
+numpy>=1.23.5
+matplotlib>=3.8.0
+pillow>=10.0.0
+scikit-learn>=1.4.0
