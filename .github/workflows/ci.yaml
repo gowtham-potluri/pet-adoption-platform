@@ -23,14 +23,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Configure GDrive credentials
-      run: |
-        echo '${{ secrets.GDRIVE_CREDENTIALS }}' > gdrive-creds.json
-        dvc remote modify gdrive gdrive_use_service_account true
-        dvc remote modify gdrive gdrive_service_account_json_file_path gdrive-creds.json
+    # - name: Configure GDrive credentials
+    #   run: |
+    #     echo '${{ secrets.GDRIVE_CREDENTIALS }}' > gdrive-creds.json
+    #     dvc remote modify gdrive gdrive_use_service_account true
+    #     dvc remote modify gdrive gdrive_service_account_json_file_path gdrive-creds.json
 
-    - name: Pull data
-      run: dvc pull --no-run-cache
+    # - name: Pull data
+    #   run: dvc pull --no-run-cache
 
     - name: Run Tests
       run: pytest
