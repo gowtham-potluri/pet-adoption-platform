@@ -87,7 +87,7 @@ jobs:
           done
 
       - name: Run smoke tests
-        run: python tests/smoke/deployment_check.py
+        run: python checks/smoke/deployment_check.py
 
       - name: Stop container
         run: docker compose down
