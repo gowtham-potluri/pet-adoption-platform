@@ -13,7 +13,7 @@ except Exception as e:
     sys.exit(1)
 
 # Prediction check
-sample_input = {"image_path": "tests/sample/cat.jpg"}
+sample_input = {"image_path": "checks/smoke/cat_test_image.jpg"}
 try:
     r = requests.post(f"{BASE_URL}/predict", json=sample_input)
     assert r.status_code == 200
