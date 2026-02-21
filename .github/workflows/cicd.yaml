@@ -89,5 +89,8 @@ jobs:
       - name: Run smoke tests
         run: python checks/smoke/deployment_check.py
 
+      - name: Run post-deployment metrics
+        run: python src/utils/performance.py
+
       - name: Stop container
         run: docker compose down
