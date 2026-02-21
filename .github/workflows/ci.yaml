@@ -30,7 +30,7 @@ jobs:
         dvc remote modify gdrive gdrive_service_account_json_file_path gdrive-creds.json
 
     - name: Pull data
-      run: dvc pull
+      run: dvc pull --no-run-cache
 
     - name: Run Tests
       run: pytest
