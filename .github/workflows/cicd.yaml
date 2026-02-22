@@ -90,6 +90,7 @@ jobs:
           for i in {1..30}; do
             if curl -s http://localhost:8080/health; then
               echo "API is up!"
+              break
             fi
             echo "API not ready yet, retrying..."
             sleep 6
