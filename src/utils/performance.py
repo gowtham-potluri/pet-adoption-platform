@@ -18,7 +18,7 @@ for item in test_batch:
         files = {"file": f}
         r = requests.post(f"{BASE_URL}/predict", files=files)
         r.raise_for_status()  # fail immediately if HTTP error
-        pred = r.json()["predicted_class"]
+        pred = r.json()["label"]
 
     y_true.append(item["label"])
     y_pred.append(pred)
