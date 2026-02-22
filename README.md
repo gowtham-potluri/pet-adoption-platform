@@ -47,25 +47,6 @@ Images resized to **224x224 RGB** for CNN compatibility.
 
 ---
 
-# Python Dependencies (Pinned Versions)
-
-```txt
-torch==2.2.2
-torchvision==0.17.2
-numpy==1.26.4
-pandas==2.2.2
-scikit-learn==1.4.2
-matplotlib==3.8.4
-pillow==10.3.0
-mlflow==2.12.1
-fastapi==0.111.0
-uvicorn==0.30.0
-python-multipart==0.0.9
-requests==2.31.0
-pytest==8.2.0
-```
-
----
 
 # Project Structure
 
@@ -167,6 +148,26 @@ Response:
 }
 ```
 
+# Python Dependencies (Pinned Versions)
+
+```txt
+torch==2.2.2
+torchvision==0.17.2
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.4.2
+matplotlib==3.8.4
+pillow==10.3.0
+mlflow==2.12.1
+fastapi==0.111.0
+uvicorn==0.30.0
+python-multipart==0.0.9
+requests==2.31.0
+pytest==8.2.0
+```
+
+---
+
 ## Dockerfile
 
 Build image:
@@ -232,6 +233,31 @@ Deployment Steps:
 4. Run smoke tests
 5. Call `/performance`
 6. Fail pipeline if tests fail
+
+---
+
+# M5: Monitoring & Logging
+
+## Logging
+
+Logs:
+```
+METHOD PATH STATUS LATENCY
+```
+
+Example:
+```
+POST /predict - 200 - 52ms
+GET /health - 200 - 3ms
+```
+
+View logs:
+
+```bash
+docker compose logs cats-dogs-api
+```
+
+---
 
 ### Performance Endpoint
 
@@ -312,46 +338,6 @@ Response:
 
 ---
 
-
-
----
-
-# M5: Monitoring & Logging
-
-## Logging
-
-Logs:
-```
-METHOD PATH STATUS LATENCY
-```
-
-Example:
-```
-POST /predict - 200 - 52ms
-GET /health - 200 - 3ms
-```
-
-View logs:
-
-```bash
-docker compose logs cats-dogs-api
-```
-
----
-
-## Metrics Tracking
-
-Tracks:
-- Total request count
-- Last 1-hour request count
-- Average latency
-
-Access via:
-```
-GET /metrics
-```
-
----
 
 # Run Locally (Complete Workflow)
 
