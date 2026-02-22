@@ -64,11 +64,6 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -85,8 +80,10 @@ jobs:
 
       - name: Run smoke tests
         run: |
-          echo "Waiting for API..."
-          for i in {1..30}; do
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          echo "Waiting for API to be ready"
+          for i in {1..10}; do
             if curl -s http://localhost:8080/health; then
               echo " - API is up!"
               break
@@ -107,13 +104,13 @@ jobs:
       - name: Copy container logs
         run: |
           mkdir -p logs
-          docker cp cats-dogs-api:/app/logs/app.log ./logs/app.log || echo "No log file found yet"
+          docker cp cats-dogs-api:/app/logs/app.log logs/app.log || echo "No log file found"
 
       - name: Upload logs as artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-logs
-          path: ./logs/app.log
+          path: logs/app.log
 
       - name: Stop container
         run: docker compose down
