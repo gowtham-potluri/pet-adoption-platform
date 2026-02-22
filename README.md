@@ -167,6 +167,72 @@ Response:
 }
 ```
 
+## Dockerfile
+
+Build image:
+
+```bash
+docker build -t cats-dogs-api .
+```
+
+Run container:
+
+```bash
+docker run -p 8080:8080 cats-dogs-api
+```
+
+---
+
+## Docker Compose Deployment
+
+```yaml
+services:
+  cats-dogs-api:
+    image: gowthampotluri/cats-dogs-api:latest
+    ports:
+      - "8080:8080"
+```
+
+Run:
+
+```bash
+docker compose up -d
+```
+
+---
+
+# M3: CI Pipeline (GitHub Actions)
+
+Triggered on:
+- Push
+- Pull Request
+
+Pipeline Steps:
+1. Checkout repository
+2. Install dependencies
+3. Run unit tests (pytest)
+4. Build Docker image
+5. Push image to Docker Hub
+
+Published Image:
+```
+gowthampotluri/cats-dogs-api:latest
+```
+
+---
+
+# M4: CD Pipeline & Deployment
+
+Triggered on push to `main`.
+
+Deployment Steps:
+1. Pull latest Docker image
+2. Deploy via Docker Compose
+3. Wait for service readiness
+4. Run smoke tests
+5. Call `/performance`
+6. Fail pipeline if tests fail
+
 ### Performance Endpoint
 
 ```
@@ -246,71 +312,7 @@ Response:
 
 ---
 
-## Dockerfile
 
-Build image:
-
-```bash
-docker build -t cats-dogs-api .
-```
-
-Run container:
-
-```bash
-docker run -p 8080:8080 cats-dogs-api
-```
-
----
-
-## Docker Compose Deployment
-
-```yaml
-services:
-  cats-dogs-api:
-    image: gowthampotluri/cats-dogs-api:latest
-    ports:
-      - "8080:8080"
-```
-
-Run:
-
-```bash
-docker compose up -d
-```
-
----
-
-# M3: CI Pipeline (GitHub Actions)
-
-Triggered on:
-- Push
-- Pull Request
-
-Pipeline Steps:
-1. Checkout repository
-2. Install dependencies
-3. Run unit tests (pytest)
-4. Build Docker image
-5. Push image to Docker Hub
-
-Published Image:
-```
-gowthampotluri/cats-dogs-api:latest
-```
-
----
-
-# M4: CD Pipeline & Deployment
-
-Triggered on push to `main`.
-
-Deployment Steps:
-1. Pull latest Docker image
-2. Deploy via Docker Compose
-3. Wait for service readiness
-4. Run smoke tests
-5. Call `/performance`
-6. Fail pipeline if tests fail
 
 ---
 
