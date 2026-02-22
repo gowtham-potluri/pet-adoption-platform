@@ -14,7 +14,7 @@ jobs:
       with:
         lfs: true
 
-    - name: Set up Python
+    - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: 3.11
@@ -27,13 +27,13 @@ jobs:
     - name: Run Tests
       run: pytest
 
-    - name: Train model
+    - name: Train Model
       run: python -m src.models.train
 
     - name: Build Docker Image
       run: docker build -t cats-dogs-api:latest .
 
-    - name: Log in to Docker Hub
+    - name: Log into Docker Hub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
@@ -52,26 +52,26 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.11
 
-      - name: Log in to Docker Hub
+      - name: Log into Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Pull latest image
+      - name: Pull Latest Image
         run: docker pull gowthampotluri/cats-dogs-api:latest
 
-      - name: Deploy container
+      - name: Deploy
         run: |
           docker rm -f cats-dogs-api || true
           docker compose up -d
 
-      - name: Run smoke tests
+      - name: Smoke Tests
         run: |
           echo "Waiting for API to be ready"
           pip install requests
@@ -85,12 +85,17 @@ jobs:
           done
           python checks/smoke/deployment_check.py
 
-      - name: Performance metrics
+      - name: Performance Tracking
         run: |
           echo "Fetching performance metrics"
           curl -s -X GET http://localhost:8080/performance | jq
 
-      - name: Package logs to export
+      - name: Monitoring
+        run: |
+          echo "Fetching performance metrics"
+          curl -s -X GET http://localhost:8080/metrics | jq
+
+      - name: Logging
         run: |
           docker compose logs cats-dogs-api
           mkdir -p logs

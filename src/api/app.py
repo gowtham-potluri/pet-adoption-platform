@@ -2,6 +2,8 @@ import os
 import time
 import requests
 import logging
+from collections import deque
+from datetime import datetime, timedelta
 from fastapi import FastAPI, UploadFile, File, Request
 from sklearn.metrics import accuracy_score
 from src.api.inference import predict
@@ -19,6 +21,25 @@ logging.basicConfig(
 )
 logger = logging.getLogger("api_logger")
 logger.info("API service starting")
+
+# Store requests as (timestamp, latency_in_ms)
+request_log = deque()
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    latency = (time.time() - start_time) * 1000  # in milliseconds
+
+    # Store timestamp and latency
+    request_log.append((datetime.utcnow(), latency))
+
+    # Optional: prune entries older than 1 hour
+    cutoff = datetime.utcnow() - timedelta(hours=1)
+    while request_log and request_log[0][0] < cutoff:
+        request_log.popleft()
+
+    return response
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
@@ -45,7 +66,6 @@ async def predict_image(file: UploadFile = File(...)):
     result = predict(image_bytes)
     return result
 
-# New endpoint: /performance
 @app.get("/performance")
 async def performance_endpoint():
     """
@@ -109,3 +129,20 @@ async def performance_endpoint():
     # Compute overall accuracy
     acc = accuracy_score(y_true, y_pred) if y_true else 0.0
     return {"accuracy": acc, "details": results}
+
+@app.get("/metrics")
+def metrics():
+    """
+    Returns request count and total latency for the last 1 hour
+    """
+    cutoff = datetime.utcnow() - timedelta(hours=1)
+    recent_requests = [(ts, lat) for ts, lat in request_log if ts >= cutoff]
+
+    total_requests = len(recent_requests)
+    total_latency = sum(lat for ts, lat in recent_requests)  # in ms
+
+    return {
+        "last_1hr_requests": total_requests,
+        "total_latency_ms": round(total_latency, 2),
+        "avg_latency_ms": round(total_latency / total_requests, 2) if total_requests else 0
+    }
