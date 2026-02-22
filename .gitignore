@@ -22,6 +22,7 @@ mlruns/
 # Models
 models/
 !src/models/
+!tests/models/
 
 # OS files
 .DS_Store
