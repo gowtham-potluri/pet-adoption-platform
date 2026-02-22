@@ -1,7 +1,9 @@
 import os
 import time
+import requests
 import logging
 from fastapi import FastAPI, UploadFile, File, Request
+from sklearn.metrics import accuracy_score
 from src.api.inference import predict
 
 app = FastAPI(title="Cats vs Dogs Classifier")
@@ -42,3 +44,68 @@ async def predict_image(file: UploadFile = File(...)):
     image_bytes = await file.read()
     result = predict(image_bytes)
     return result
+
+# New endpoint: /performance
+@app.get("/performance")
+async def performance_endpoint():
+    """
+    Evaluate model performance on a small test batch.
+    Returns accuracy, predictions, and latency per sample.
+    """
+    # Example test data (can be replaced with real test dataset)
+    test_batch = [
+        {"image_path": "resources/cat1_test.jpg", "label": "cat"},
+        {"image_path": "resources/cat2_test.jpg", "label": "cat"},
+        {"image_path": "resources/cat3_test.jpg", "label": "cat"},
+        {"image_path": "resources/dog1_test.jpg", "label": "dog"},
+        {"image_path": "resources/dog2_test.jpg", "label": "dog"},
+    ]
+
+    results = []
+    y_true = []
+    y_pred = []
+
+    for item in test_batch:
+        start_time = time.time()
+        try:
+            with open(item["image_path"], "rb") as f:
+                image_bytes = f.read()
+                pred_result = predict(image_bytes)
+                pred_label = pred_result.get("label")
+                pred_prob = pred_result.get("probability")
+
+            latency = time.time() - start_time
+
+            y_true.append(item["label"])
+            y_pred.append(pred_label)
+
+            # Collect per-sample results
+            results.append(
+                {
+                    "file": item["image_path"],
+                    "true_label": item["label"],
+                    "pred_label": pred_label,
+                    "probability": pred_prob,
+                    "latency_ms": round(latency * 1000, 2),
+                    "correct": pred_label == item["label"],
+                }
+            )
+
+            logger.info(
+                f"{item['image_path']} | True: {item['label']} | Pred: {pred_label} | "
+                f"Prob: {pred_prob} | Latency: {latency*1000:.1f}ms"
+            )
+
+        except Exception as e:
+            latency = time.time() - start_time
+            logger.error(
+                f"Failed to predict {item['image_path']} | Error: {e} | "
+                f"Latency: {latency*1000:.1f}ms"
+            )
+            results.append(
+                {"file": item["image_path"], "error": str(e), "latency_ms": round(latency * 1000, 2)}
+            )
+
+    # Compute overall accuracy
+    acc = accuracy_score(y_true, y_pred) if y_true else 0.0
+    return {"accuracy": acc, "details": results}

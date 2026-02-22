@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy only necessary files
 COPY src/ src/
 COPY models/ models/
+COPY resources resources/
 
 RUN mkdir -p /app/logs
 

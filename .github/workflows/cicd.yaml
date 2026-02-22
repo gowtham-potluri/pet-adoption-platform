@@ -78,29 +78,28 @@ jobs:
       - name: Pull latest image
         run: docker pull gowthampotluri/cats-dogs-api:latest
 
-      - name: Stop old container
-        run: docker rm -f cats-dogs-api || true
-
       - name: Deploy container
-        run: docker compose up -d
+        run: |
+          docker rm -f cats-dogs-api || true
+          docker compose up -d
 
-      - name: Wait for API to be ready
+      - name: Run smoke tests
         run: |
           echo "Waiting for API..."
           for i in {1..30}; do
             if curl -s http://localhost:8080/health; then
-              echo "API is up!"
+              echo " - API is up!"
               break
             fi
             echo "API not ready yet, retrying..."
             sleep 6
           done
+          python checks/smoke/deployment_check.py
 
-      - name: Run smoke tests
-        run: python checks/smoke/deployment_check.py
-
-      - name: Run post-deployment metrics
-        run: python src/utils/performance.py
+      - name: Performance metrics
+        run: |
+          echo "Fetching performance metrics"
+          curl -s -X GET http://localhost:8080/performance | jq
 
       - name: Show container logs
         run: docker compose logs cats-dogs-api
