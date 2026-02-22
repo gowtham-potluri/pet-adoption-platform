@@ -105,15 +105,13 @@ jobs:
         run: docker compose logs cats-dogs-api
 
       - name: Copy container logs
-        run: |
-          mkdir -p logs
-          docker cp cats-dogs-api:/app/logs/app.log ./logs/app.log || echo "No log file found yet"
+        run: docker cp cats-dogs-api:/app/logs/app.log ./logs/app.log || echo "No log file found yet"
 
       - name: Upload logs as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-logs
-          path: logs/app.log
+          path: ./logs/app.log
 
       - name: Stop container
         run: docker compose down
