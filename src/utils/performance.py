@@ -5,8 +5,8 @@ BASE_URL = "http://localhost:8080"
 
 # Example test data (simulate real requests)
 test_batch = [
-    {"image_path": "checks/smoke/cat_test_image.jpg", "label": 0},
-    {"image_path": "checks/smoke/dog_test_image.jpg", "label": 1},
+    {"image_path": "checks/smoke/cat_test_image.jpg", "label": "cat"},
+    {"image_path": "checks/smoke/dog_test_image.jpg", "label": "dog"},
 ]
 
 y_true = []
