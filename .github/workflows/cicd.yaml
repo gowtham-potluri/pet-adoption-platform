@@ -25,8 +25,8 @@ jobs:
     - name: Configure GDrive credentials
       run: |
         echo '${{ secrets.GDRIVE_CREDENTIALS }}' > gdrive-creds.json
-        dvc remote modify gdrive gdrive_use_service_account true
-        dvc remote modify gdrive gdrive_service_account_json_file_path gdrive-creds.json
+        dvc remote modify gdrive_remote gdrive_use_service_account true
+        dvc remote modify gdrive_remote gdrive_service_account_json_file_path gdrive-creds.json
 
     - name: Pull data from remote
       run: dvc pull --no-run-cache
