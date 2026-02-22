@@ -51,11 +51,8 @@ Images resized to **224x224 RGB** for CNN compatibility.
 ### https://github.com/gowtham-potluri/pet-adoption-platform
 ### https://github.com/gowtham-potluri/pet-adoption-platform/actions/runs/22276094937
 
-# Google Drive recording link
+# Goolge drive link for recording
 ### https://drive.google.com/file/d/1isdWYEV6bI3cB_TZTo0P22raVBXiSaPf/view?usp=drive_link
-
-### Note: Removed all the artifacts from the folder due to size restrictions
-
 
 # Project Structure
 
