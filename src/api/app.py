@@ -1,3 +1,4 @@
+import os
 import time
 import logging
 from fastapi import FastAPI, UploadFile, File, Request
@@ -6,15 +7,30 @@ from src.api.inference import predict
 app = FastAPI(title="Cats vs Dogs Classifier")
 
 # Set up logging
-logging.basicConfig(level=logging.INFO)
+# Ensure logs folder exists
+os.makedirs("/app/logs", exist_ok=True)
+
+logging.basicConfig(
+    filename="/app/logs/app.log",
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s"
+)
 logger = logging.getLogger("api_logger")
+logger.info("API service starting")
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     start_time = time.time()
     response = await call_next(request)
-    process_time = time.time() - start_time
-    logger.info(f"{request.method} {request.url.path} - {response.status_code} - {process_time:.2f}s")
+    latency = time.time() - start_time  # in seconds
+
+    # Convert to ms if less than 1 second
+    if latency < 1.0:
+        latency_str = f"{latency * 1000:.0f}ms"
+    else:
+        latency_str = f"{latency:.2f}s"
+
+    logger.info(f"{request.method} {request.url.path} - {response.status_code} - {latency_str}")
     return response
 
 @app.get("/health")
