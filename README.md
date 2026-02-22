@@ -47,6 +47,10 @@ Images resized to **224x224 RGB** for CNN compatibility.
 
 ---
 
+# GitHub
+### https://github.com/gowtham-potluri/pet-adoption-platform
+### https://github.com/gowtham-potluri/pet-adoption-platform/actions/runs/22276094937
+
 
 # Project Structure
 
