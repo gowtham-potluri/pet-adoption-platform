@@ -9,6 +9,9 @@ __pycache__/
 # Data
 data/processed/
 
+# logs
+logs/
+
 # DVC cache
 .dvc/cache/
 .dvcignore
