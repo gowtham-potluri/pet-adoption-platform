@@ -10,8 +10,8 @@ This project demonstrates model development, experiment tracking, CI/CD automati
 
 Binary image classification for a **Pet Adoption Platform** to automatically classify pet images as:
 
-- Cat  
-- Dog  
+- Cat
+- Dog
 
 Dataset: Cats vs Dogs dataset from Kaggle  
 Images resized to **224x224 RGB** for CNN compatibility.
@@ -91,8 +91,8 @@ git lfs track "data/raw/**"
 - Baseline CNN implemented in PyTorch
 - Images resized to 224x224
 - Data augmentation:
-  - RandomHorizontalFlip
-  - RandomRotation
+    - RandomHorizontalFlip
+    - RandomRotation
 - Train/Val/Test split: 80/10/10
 - Model saved as:
 
@@ -231,8 +231,7 @@ Deployment Steps:
 2. Deploy via Docker Compose
 3. Wait for service readiness
 4. Run smoke tests
-5. Call `/performance`
-6. Fail pipeline if tests fail
+5. Fail pipeline if tests fail
 
 ---
 
@@ -338,6 +337,65 @@ Response:
 
 ---
 
+---
+
+# Model Performance Comparison (Dataset Size Impact)
+
+To evaluate how dataset size affects model generalization, the model was trained under two different dataset configurations.
+
+## Experiment 1 — Small Dataset
+
+- **Training Data:** 1,000 Cat images + 1,000 Dog images
+- **Total Images:** 2,000
+- **Accuracy:** `0.60`
+
+This indicates moderate performance and limited generalization due to smaller dataset size.
+
+---
+
+## Experiment 2 — Full Dataset
+
+- **Training Data:** 12,000 Cat images + 12,000 Dog images
+- **Total Images:** 24,000
+- **Accuracy:** `1.00`
+
+This shows near-perfect classification performance on the evaluation dataset, demonstrating significant improvement with larger training data.
+
+---
+
+## Observations
+
+| Dataset Size | Cats | Dogs | Total Images | Performance |
+|-------------|------|------|--------------|-------------|
+| Small       | 1,000 | 1,000 | 2,000 | 0.60 |
+| Large       | 12,000 | 12,000 | 24,000 | 1.00 |
+
+## Github Actions links:
+### 0.6 Score
+[![CI Pipeline](https://github.com/gowtham-potluri/pet-adoption-platform/actions/workflows/cicd.yaml/badge.svg)](https://github.com/gowtham-potluri/pet-adoption-platform/actions/runs/22272157522/job/64428974520)
+
+### 1.0 Score
+[![CI Pipeline](https://github.com/gowtham-potluri/pet-adoption-platform/actions/workflows/cicd.yaml/badge.svg)](https://github.com/gowtham-potluri/pet-adoption-platform/actions/runs/22276094937/job/64439733849)
+
+
+### Key Insight
+
+- Increasing dataset size dramatically improved model performance.
+- Larger datasets help CNNs learn better feature representations.
+- Data quantity has a direct impact on generalization capability.
+
+---
+
+## Conclusion
+
+The experiment clearly demonstrates the importance of:
+- Sufficient training data
+- Proper dataset scaling
+- Robust experiment tracking (via MLflow)
+
+The `/performance` endpoint helps validate deployed model quality post-training and ensures production visibility into model accuracy.
+
+---
 
 # Run Locally (Complete Workflow)
 
@@ -398,7 +456,7 @@ Show:
 ✔ Trained model (.pt)  
 ✔ Git-LFS dataset  
 ✔ Logs + Monitoring  
-✔ Screen recording (<5 min)  
+✔ Screen recording (<5 min)
 
 ---
 
