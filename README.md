@@ -117,6 +117,16 @@ Logged:
 
 Run locally:
 
+## Steps:
+### 1. python3.11 -m venv .venv
+### 2. source .venv/bin/activate
+### 3. pip install -r requirements.txt
+### 4. python -m src.models.train
+### 5. mlflow ui
+### 6. docker build -t cats-dogs-api .
+### 7. docker run -p 8080:8080 cats-dogs-api
+### 8. naviate to localhost:8080/docs
+
 ```bash
 mlflow ui
 ```
