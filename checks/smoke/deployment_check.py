@@ -3,7 +3,7 @@ import sys
 import time
 
 BASE_URL = "http://localhost:8080"
-SAMPLE_IMAGE = "checks/smoke/cat_test_image.jpg"
+SAMPLE_IMAGE = "resources/cat1_test.jpg"
 
 # Wait a few seconds for the server to start
 print("Waiting for the API server to be ready...")
